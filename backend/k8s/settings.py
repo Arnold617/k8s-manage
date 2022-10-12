@@ -93,10 +93,10 @@ if IS_PROD:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'varnish',
-            'USER': 'varnish',
-            'PASSWORD': '5EWrB{Tz',
-            'HOST': '10.21.33.246',
+            'NAME': 'online',
+            'USER': 'online',
+            'PASSWORD': 'password',
+            'HOST': '10.244.111.10',
             'PORT': '15199',
         }
     }
