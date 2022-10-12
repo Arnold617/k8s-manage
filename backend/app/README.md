@@ -1,18 +1,25 @@
-## 前端
-#### 版本要求
+## 后端
+### 版本要求
 ```
-node >= v12.2.1
-yarn >= 1.22.1
+python >= 3.7
+django >= 3.0
+```
+### 安装依赖
+```
+pip install -r requirements.txt
+```
+### 初始化
+```
+python manage.py makemigrations
+python manage.py migrate
 ```
 
-#### 安装依赖
+### 启动
 ```
-cd front/
-yarn install 
+# 进到项目目录 
+uvicorn k8s.asgi:application --host 0.0.0.0 --port 8000
 ```
 
-#### 运行
+### 接口review
 ```
-np run dev
 ```
-***
