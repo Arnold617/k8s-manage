@@ -30,7 +30,9 @@
 			</el-table-column>
       <el-table-column prop="path" label="路径" align="center" min-width="15%">
 			</el-table-column>
-      <el-table-column prop="serverName" label="Service" align="center" min-width="15%">
+      <el-table-column prop="serviceName" label="Service" align="center" min-width="15%">
+			</el-table-column>
+      <el-table-column prop="servicePort" label="Port" align="center" min-width="15%">
 			</el-table-column>
       <el-table-column label="操作" align="center" width="200px">
         <template slot-scope="scope">
@@ -43,11 +45,17 @@
       </el-table-column>
 		</el-table>
 
+    <!--页脚-->
+		<el-col :span="24" class="toolbar">
+			<el-pagination @current-change="handleCurrentChange" :page-size="15" layout="total, prev, pager, next" :total="total">
+			</el-pagination>
+		</el-col>
+
     <!--新增界面-->
 		<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
         <el-form-item label="namespace" prop="namespace">
-          <el-select v-model="addForm.namespace" filterable placeholder="请选择空间">
+          <el-select v-model="addForm.namespace" clearable="" filterable placeholder="请选择空间" @change=get_servicelist()>
 						<el-option v-for="ns in NameSpaceList" :key="ns" :label="ns" :value="ns"></el-option>
 					</el-select>
         </el-form-item>
@@ -60,10 +68,12 @@
 				</el-form-item>
         <el-form-item label="路径" prop="path">
 					<el-input v-model="addForm.path" :min="100" :max="9999" placeholder="path" />
-          <span style="color:red">全域名用"/"即可</span>
+          <span style="color:red">全路径用"/"即可</span>
 				</el-form-item>
-        <el-form-item label="Service" prop="serverName">
-          <el-input v-model="addForm.serverName" placeholder="Service" />
+        <el-form-item label="Service" prop="serviceName">
+          <el-select v-model="addForm.serviceName" clearable filterable placeholder="请选择">
+						<el-option v-for="ns in serviceList" :key="ns.name" :label="ns.name" :value="ns.name+','+ns.port"></el-option>
+					</el-select>
         </el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -75,7 +85,7 @@
   </section>
 </template>
 <script>
-    import { getIngressList, deleteIngress, addIngress, updateIngress, getNameSpaces } from '../../api/api';
+    import { getIngressList, deleteIngress, addIngress, updateIngress, getNameSpaces, getServiceList, } from '../../api/api';
 
   export default {
     data() {
@@ -88,6 +98,7 @@
         addLoading: false,
         addFormVisible: false,
         NameSpaceList: [],
+        serviceList: [],
         page: 1,
         total: 0,
         select_value: '',
@@ -143,6 +154,21 @@
           })
       },
 
+      get_servicelist() {
+        let params = {
+          namespace: this.addForm.namespace,
+        }
+        getServiceList(params)
+          .then(res => {
+            this.serviceList = res.data.data;
+          })
+      },
+
+      handleCurrentChange(val) {
+				this.page = val;
+				this.get_applist();
+			},
+
       check_addName: function() {
         this.addForm.name = this.addForm.name.replace(/[^\a-z\0-9\_\-]/g,'');
       },
@@ -150,6 +176,45 @@
       handleAdd: function() {
 				this.addFormVisible = true;
 			},
+
+      //添加
+			addSubmit: function() {
+        this.addLoading = true;
+        let params = Object.assign({}, this.addForm);
+        let serviceInfo = params.serviceName
+        params.serviceName = serviceInfo.split(',')[0]
+        params.servicePort = serviceInfo.split(',')[1]
+        console.log(params)
+        addIngress(params)
+          .then((res) => {
+            this.addLoading = false;
+            this.$message({
+              message: '提交成功',
+              type: 'success'
+            });
+            this.$refs['addForm'].resetFields();
+            this.addFormVisible = false;
+            this.get_applist();
+          });		
+			},
+
+      handleDel: function(index, row) {
+				this.$confirm('确认删除该Ingress吗?', '提示', {
+					type: 'warning',
+				}).then(() => {
+					this.listLoading = true;
+					deleteIngress(row)
+						.then((res) => {
+							this.listLoading = false;
+							this.$message({
+								message: '删除成功',
+								type: 'success'
+							});
+							this.get_applist();
+						});
+				}).catch(() => {});
+			},
+
     }
   }
 </script>

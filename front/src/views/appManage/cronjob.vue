@@ -41,7 +41,7 @@
       </el-table-column>
 		</el-table>
     
-    <!--工具条-->
+    <!--页脚-->
 		<el-col :span="24" class="toolbar">
 			<el-pagination @current-change="handleCurrentChange" :page-size="15" layout="total, prev, pager, next" :total="total">
 			</el-pagination>

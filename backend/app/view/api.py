@@ -31,7 +31,6 @@ class KubernetesTools(object):
         self.core_api_v1 = client.CoreV1Api(client.ApiClient(configuration))
         self.apps_v1_api = client.AppsV1Api(client.ApiClient(configuration))
         self.batch_v1_api = client.BatchV1beta1Api(client.ApiClient(configuration))
-        # self.networking_v1_api = client.NetworkingV1Api(client.ApiClient(configuration))
         self.networking_v1_api = client.NetworkingV1beta1Api(client.ApiClient(configuration))
 
 
@@ -43,7 +42,7 @@ class KubernetesTools(object):
         return namespace_list
 
 
-    def create_namespace(self, namespace):
+    def create_namespace(self, namespace="default"):
 
         list_names = self.get_namespace_list()
         if namespace not in list_names:
@@ -57,12 +56,16 @@ class KubernetesTools(object):
             return JsonResponse("已经存在namespace:{%s}" % namespace)
 
 
-    def get_services(self, namespace='default'):
+    def get_services(self, namespace):
         service_list = []
-        response = self.core_api_v1.list_namespaced_service(namespace)
-        print(response)
-        for info in response.items:
-            service_list.append({'name':info.metadata.name, 'port': info.spec.ports})
+        if namespace:
+            response = self.core_api_v1.list_namespaced_service(namespace)
+            for info in response.items:
+                service_list.append({'name':info.metadata.name, 'port': info.spec.ports[0].port})
+        else:
+            response = self.core_api_v1.list_service_for_all_namespaces()
+            for info in response.items:
+                service_list.append({'name': info.metadata.name, 'port': info.spec.ports[0].port})
 
         return service_list
             # print("%s \t%s \t%s \t%s \t%s \n" % (
@@ -374,14 +377,14 @@ class KubernetesTools(object):
             except ApiException as e:
                 return False
 
-    def create_ingress(self, namespace, name, host, path, svc_port, svc_name):
+    def create_ingress(self, namespace, name, host, path, svc_name, svc_port):
 
         if self.judge_ingress_exists(namespace, name):
             exit(0)
 
         body = client.NetworkingV1beta1Ingress(
-            # api_version="networking.k8s.io/v1beta1",
-            api_version="extensions/v1beta1",
+            api_version="networking.k8s.io/v1beta1",
+            # api_version="extensions/v1beta1",
             kind="Ingress",
             metadata=client.V1ObjectMeta(name=name, annotations={
                 "nginx.ingress.kubernetes.io/rewrite-target": "/"
@@ -401,7 +404,6 @@ class KubernetesTools(object):
                 )]
             )
         )
-
         try:
             resp = self.networking_v1_api.create_namespaced_ingress(
                                 namespace=namespace, body=body)
@@ -425,7 +427,7 @@ class KubernetesTools(object):
 
         ingress_list = self.networking_v1_api.list_namespaced_ingress(namespace)
 
-        for ing in ingress_list:
+        for ing in ingress_list.items:
             if name == ing.metadata.name:
                 return True
         return False

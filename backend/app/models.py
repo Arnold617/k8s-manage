@@ -33,8 +33,8 @@ class Ingress(models.Model):
     namespace = models.CharField(max_length=128)
     host = models.CharField(max_length=128)
     path = models.CharField(max_length=128)
-    serverName = models.CharField(max_length=128)
-    servicePort = models.CharField(max_length=16)
+    serviceName = models.CharField(max_length=128)
+    servicePort = models.IntegerField()
 
 
 class appList(models.Model):

@@ -1,0 +1,8 @@
+# gitigore
+
+front/node_modules/
+backend/app/migrations/
+backend/k8s/__pycache__/
+backend/app/__pycache__/
+backend/app/view/__pycache__/
+backend/.idea/

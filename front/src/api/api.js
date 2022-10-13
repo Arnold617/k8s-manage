@@ -4,8 +4,6 @@ let base = 'http://127.0.0.1:8000';
 
 export const requestLogin = params => { return axios.post(`${base}/login/`, params).then(res => res.data); };
 
-// export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }); };
-
 // token
 export const getTokenList = params => { return axios.get(`${base}/tokenList/`, { params: params });};
 
@@ -22,7 +20,7 @@ export const getNameSpaces = params => { return axios.get(`${base}/NameSpaces/`)
 export const getPodList = params => { return axios.get(`${base}/PodList/`, { params: params }) };
 
 // service list
-export const ServiceList = params => { return axios.get(`${base}/ServiceList/`, { params: params }) };
+export const getServiceList = params => { return axios.get(`${base}/ServiceList/`, { params: params }) };
 
 // app 
 export const getAppList = params => { return axios.get(`${base}/AppList/`, {params: params}) };

@@ -291,7 +291,8 @@ class IngressList(generics.ListCreateAPIView):
         host = data.get('host')
         path = data.get('path')
         service_name = data.get('serviceName')
-        service_port = data.get('servicePort')
+        service_port = int(data.get('servicePort'))
+
         tools = KubernetesTools()
         response = tools.create_ingress(namespace, name, host, path, service_name, service_port)
         if response is False:
@@ -307,6 +308,26 @@ class IngressList(generics.ListCreateAPIView):
 class IngressDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Ingress.objects.all().order_by('id')
     serializer_class = IngressSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        id = request.data.get('id')
+        data = Ingress.objects.filter(id=id).order_by()
+
+        for info in data:
+            tools = KubernetesTools()
+            response_dep = tools.delete_ingress(info.name, info.namespace)
+
+            if response_dep is True:
+                print('ok,logs(CronJob delete success!)')
+            else:
+                print(response_dep)
+                exit(0)
+
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 
 
 class NameSpaces(View):
@@ -333,7 +354,7 @@ class ServiceList(View):
 
     def get(self, request):
         namespace = request.GET.get('namespace')
-        tools = KubernetesTools
+        tools = KubernetesTools()
         result = tools.get_services(namespace)
         data = {"data": result}
         return JsonResponse(data)
