@@ -377,10 +377,7 @@ class KubernetesTools(object):
             except ApiException as e:
                 return False
 
-    def create_ingress(self, namespace, name, host, path, svc_name, svc_port):
-
-        if self.judge_ingress_exists(namespace, name):
-            exit(0)
+    def create_ingress_object(self, name, namespace, host, path, svc_name, svc_port):
 
         body = client.NetworkingV1beta1Ingress(
             api_version="networking.k8s.io/v1beta1",
@@ -404,6 +401,11 @@ class KubernetesTools(object):
                 )]
             )
         )
+        return body
+
+    def create_ingress(self, name, namespace, body):
+        if self.judge_ingress_exists(namespace, name):
+            exit(0)
         try:
             resp = self.networking_v1_api.create_namespaced_ingress(
                                 namespace=namespace, body=body)
@@ -411,6 +413,16 @@ class KubernetesTools(object):
                 return True
         except ApiException as e:
             return False
+
+    def update_ingress(self, name, namespace, body):
+
+        if self.judge_ingress_exists(namespace, name):
+            try:
+                resp = self.networking_v1_api.patch_namespaced_ingress(name, namespace, body)
+                if resp:
+                    return True
+            except ApiException as e:
+                return False
 
     def delete_ingress(self, name, namespace):
 

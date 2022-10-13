@@ -294,7 +294,8 @@ class IngressList(generics.ListCreateAPIView):
         service_port = int(data.get('servicePort'))
 
         tools = KubernetesTools()
-        response = tools.create_ingress(namespace, name, host, path, service_name, service_port)
+        body = tools.create_ingress_object(name, namespace, host, path, service_name, service_port)
+        response = tools.create_ingress(name, namespace, body)
         if response is False:
             exit(0)
 
@@ -327,7 +328,31 @@ class IngressDetail(generics.RetrieveUpdateDestroyAPIView):
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+    def update(self, request, *args, **kwargs):
+        data = request.data
+        name = data.get('name')
+        namespace = data.get('namespace')
+        host = data.get('host')
+        path = data.get('path')
+        service_name = data.get('serviceName')
+        service_port = data.get('servicePort')
 
+        tools = KubernetesTools()
+        body = tools.create_ingress_object(name, namespace, host, path, service_name, service_port)
+        response = tools.update_ingress(name, namespace, body)
+        if response is False:
+            exit(0)
+
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
 
 
 class NameSpaces(View):

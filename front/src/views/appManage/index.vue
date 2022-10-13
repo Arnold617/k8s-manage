@@ -1,5 +1,6 @@
 <template>
 	<section>
+			<router-view></router-view>
 		<!-- 工具条 -->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
@@ -267,7 +268,7 @@ import { getNameSpaces, getPodList, getAppList, deleteApp, addApp, updateApp } f
 			//跳到详情页面
 			handleDetail: function(index, row) {
 				this.$router.push({
-					path: '/appDetail',
+					path: 'appDetail',
 					query: {
 						nameSpace: row.nameSpace,
 						projectName: row.projectName

@@ -7,7 +7,7 @@
 					<el-button type="success" @click="handleAdd">+</el-button>
 				</el-form-item>
 				<el-form-item>
-					<el-input v-model="filters.name" placeholder="查询应用名称"></el-input>
+					<el-input v-model="filters.name" placeholder="查询deployment"></el-input>
 				</el-form-item>
 			</el-form>
 		</el-col>
@@ -323,7 +323,7 @@
 			//跳到详情页面
 			handleDetail: function(index, row) {
 				this.$router.push({
-					path: '/podDetail',
+					path: 'podDetail',
 					query: {
 						namespace: row.nameSpace,
 						name: row.name

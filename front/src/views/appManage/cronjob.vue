@@ -7,7 +7,7 @@
 					<el-button type="success" @click="handleAdd">+</el-button>
 				</el-form-item>
 				<el-form-item>
-					<el-input v-model="filters.name" placeholder="查询应用名称"></el-input>
+					<el-input v-model="filters.name" placeholder="查询cronjob"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" v-on:click="get_applist">查询</el-button>

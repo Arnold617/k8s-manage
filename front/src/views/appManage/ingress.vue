@@ -63,11 +63,11 @@
 					<el-input v-model.trim="addForm.name" :change="check_addName()" auto-complete="off" placeholder="名称"></el-input>
 				</el-form-item>
         <el-form-item label="域名" prop="host">
-					<el-input v-model="addForm.host" :min="100" :max="9999" placeholder="域名" />
+					<el-input v-model="addForm.host" placeholder="域名" />
           <span style="color:red">多个域名用逗号','分开</span>
 				</el-form-item>
         <el-form-item label="路径" prop="path">
-					<el-input v-model="addForm.path" :min="100" :max="9999" placeholder="path" />
+					<el-input v-model="addForm.path" placeholder="path" />
           <span style="color:red">全路径用"/"即可</span>
 				</el-form-item>
         <el-form-item label="Service" prop="serviceName">
@@ -79,6 +79,33 @@
 			<div slot="footer" class="dialog-footer">
 				<el-button @click.native="addFormVisible = false">取消</el-button>
 				<el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
+			</div>
+		</el-dialog>
+
+    <!--编辑界面-->
+		<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
+			<el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
+				<el-form-item label="项目名" prop="name">
+					<el-input v-model="editForm.name" auto-complete="off"/>
+				</el-form-item>
+        <el-form-item label="命令空间" prop="namespace">
+					<el-input v-model="editForm.namespace" disabled auto-complete="off"/>
+				</el-form-item>
+        <el-form-item label="域名" prop="host">
+          <el-input v-model="editForm.host" auto-complete="off" />
+          <span style="color:red">多个域名用逗号','分开</span>
+        </el-form-item>
+        <el-form-item label="路径" prop="path">
+          <el-input v-model="editForm.path" />
+          <span style="color:red">全路径用"/"即可</span>
+        </el-form-item>
+				<el-form-item label="Service" prop="serviceName">
+					<el-input v-model="editForm.serviceName" disabled auto-complete="off"/>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click.native="editFormVisible = false">取消</el-button>
+				<el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
 			</div>
 		</el-dialog>
 
@@ -96,7 +123,9 @@
         appList: [],
         listLoading: false,
         addLoading: false,
+        editLoading: false,
         addFormVisible: false,
+        editFormVisible: false,
         NameSpaceList: [],
         serviceList: [],
         page: 1,
@@ -105,7 +134,25 @@
         addForm: {
           name: '',
         },
+        editForm: {},
         addFormRules: {
+					name: [{
+						required: true,
+						message: '请输入名称',
+						trigger: 'blur'
+					}],
+          host: [{
+						required: true,
+						message: '请输入名称',
+						trigger: 'blur'
+					}],
+          path: [{
+						required: true,
+						message: '请输入名称',
+						trigger: 'blur'
+					}],
+        },
+        editFormRules: {
 					name: [{
 						required: true,
 						message: '请输入名称',
@@ -177,6 +224,12 @@
 				this.addFormVisible = true;
 			},
 
+      // 显示编辑界面
+			handleEdit: function(index, row) {
+				this.editFormVisible = true;
+				this.editForm = Object.assign({}, row);
+			},
+
       //添加
 			addSubmit: function() {
         this.addLoading = true;
@@ -184,7 +237,6 @@
         let serviceInfo = params.serviceName
         params.serviceName = serviceInfo.split(',')[0]
         params.servicePort = serviceInfo.split(',')[1]
-        console.log(params)
         addIngress(params)
           .then((res) => {
             this.addLoading = false;
@@ -196,6 +248,23 @@
             this.addFormVisible = false;
             this.get_applist();
           });		
+			},
+
+      // 编辑
+			editSubmit: function() {
+        this.editLoading = true;
+        const params = Object.assign({}, this.editForm);
+        updateIngress(params)
+          .then((res) => {
+            this.editLoading = false;
+            this.$message({
+              message: '提交成功',
+              type: 'success'
+            });
+            this.$refs['editForm'].resetFields();
+            this.editFormVisible = false;
+            this.get_applist();
+					})
 			},
 
       handleDel: function(index, row) {

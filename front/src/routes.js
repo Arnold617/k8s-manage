@@ -28,6 +28,7 @@ let routes = [
     {
         path: '/',
         component: Home,
+        redirect: '/dashbord',
         name: '',
         iconCls: 'fa el-icon-share',
         leaf: true,//只有一个节点
