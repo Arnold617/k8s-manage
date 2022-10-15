@@ -13,7 +13,7 @@
 
     <el-table :data="podList" highlight-current-row v-loading="listLoading" style="width: 100%;">
 			<el-table-column type="index" label="ID" width="66px"/>
-			<el-table-column prop="name" label="名称" align="center" min-width="15%"/>
+			<el-table-column prop="podName" label="名称" align="center" min-width="15%"/>
       <el-table-column prop="ip" label="ip" align="center" min-width="15%"/>
       <el-table-column prop="node" label="宿主机" align="center" min-width="15%"/>
       <el-table-column prop="status" label="容器状态" align="center" min-width="15%">
@@ -43,7 +43,7 @@
 					<el-input v-model="scalingForm.name" style="width:40%" auto-complete="off" :disabled="true"></el-input>
 				</el-form-item>
 				<el-form-item label="容器数量" prop="replicas">
-					<el-input-number v-model="scalingForm.replicas"></el-input-number>
+					<el-input-number v-model="scalingForm.replicas" :min="1" :max="99"></el-input-number>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -74,7 +74,7 @@
 <script>
   import { getPodList, getDeploymentList, updateDeployment } from '../../api/api';
   // import 'xterm/css/xterm.css';
-  // import { Terminal } from 'xterm';
+  import { Terminal } from 'xterm';
   // import { FitAddon } from 'xterm-addon-fit';
   // import { AttachAddon } from 'xterm-addon-attach';
   import moment from 'moment-timezone';
@@ -116,8 +116,6 @@
 						trigger: 'blur'
 					}]
 				}
-
-
       }
     },
 
@@ -193,7 +191,26 @@
             this.get_podlist();
           });
 			},
-      
+
+      // handleDetail: function(index, row) {
+      //   this.$router.push({
+      //     path: 'podSsh',
+      //     query: {
+      //       namespace: row.namespace,
+      //       name: row.name
+      //     }
+      //   })
+      // }
+      handleDetail: function(index, row) {
+        let routeData = this.$router.resolve({
+          path: 'podSsh',
+          query: {
+            namespace: row.namespace,
+						podName: row.podName 
+          }
+        })
+        window.open(routeData.href,'_blank')
+      }
     }
   }
 </script>

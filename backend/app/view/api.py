@@ -89,12 +89,14 @@ class KubernetesTools(object):
                 data = []
                 for pod in api_response.items:
                     # if pod.metadata.labels['app'] == deployment_name:
+                    # print(pod)
                     data.append({
-                        "name": pod.metadata.name,
+                        "podName": pod.metadata.name,
                         "ip": pod.status.pod_ip,
                         "node": pod.status.host_ip,
                         "status": pod.status.phase,
                         "startTime": pod.status.start_time,
+                        "namespace": pod.metadata.namespace
                     })
                 return data
             except ApiException as e:
@@ -202,6 +204,7 @@ class KubernetesTools(object):
 
 
     def update_deployment(self, data):
+        print("update_deployment")
 
         name = data.get('name')
         namespace = data.get('nameSpace')
@@ -282,7 +285,6 @@ class KubernetesTools(object):
         cont_stream = stream(self.core_api_v1.connect_get_namespaced_pod_exec,
                              name=name,
                              namespace=namespace,
-                             container=container,
                              command=exec_command,
                              stderr=True, stdin=True,
                              stdout=True, tty=True,
@@ -443,5 +445,3 @@ class KubernetesTools(object):
             if name == ing.metadata.name:
                 return True
         return False
-
-

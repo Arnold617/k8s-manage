@@ -44,10 +44,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'app',
     'rest_framework',
     'corsheaders', # 解决跨域,
 ]
+
+ASGI_APPLICATION = 'k8s.routing.application'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

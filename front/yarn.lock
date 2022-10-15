@@ -6347,6 +6347,11 @@
   "resolved" "https://registry.npmjs.org/xterm-addon-fit/-/xterm-addon-fit-0.6.0.tgz"
   "version" "0.6.0"
 
+"xterm-addon-web-links@^0.7.0":
+  "integrity" "sha512-6PqoqzzPwaeSq22skzbvyboDvSnYk5teUYEoKBwMYvhbkwOQkemZccjWHT5FnNA8o1aInTc4PRYAl4jjPucCKA=="
+  "resolved" "https://registry.npmjs.org/xterm-addon-web-links/-/xterm-addon-web-links-0.7.0.tgz"
+  "version" "0.7.0"
+
 "xterm@^5.0.0":
   "integrity" "sha512-tmVsKzZovAYNDIaUinfz+VDclraQpPUnAME+JawosgWRMphInDded/PuY0xmU5dOhyeYZsI0nz5yd8dPYsdLTA=="
   "resolved" "https://registry.npmjs.org/xterm/-/xterm-5.0.0.tgz"

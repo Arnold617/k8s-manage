@@ -10,6 +10,7 @@ import appDetail from './views/appManage/appdetail.vue'
 import podDetail from './views/appManage/podDetail.vue'
 import cronjob from './views/appManage/cronjob.vue'
 import ingress from './views/appManage/ingress.vue'
+import podSsh from './views/appManage/xterm.vue'
 
 
 let routes = [
@@ -54,7 +55,8 @@ let routes = [
         leaf: true,//只有一个节点
         hidden: true,  // 隐藏菜单栏
         children: [
-            { path: '/podDetail', component: podDetail, name: 'podDetail'}
+            { path: '/podDetail', component: podDetail, name: 'podDetail'},
+            { path: '/podSsh', component: podSsh, name: 'podSsh'}
         ]
     },
     {
