@@ -1,4 +1,4 @@
-## 后端
+## 后端 （python+django）
 ### 版本要求
 ```
 python >= 3.7
@@ -17,10 +17,32 @@ python manage.py migrate
 ### 启动
 ```
 # 进到项目目录 
-uvicorn Varnish.asgi:application --host 0.0.0.0 --port 8000
+python manage.py runserver 8000
 ```
 
 ### 接口review
 ```
+# 文件tree
+├── README.md
+├── app
+│   ├── admin.py
+│   ├── apps.py
+│   ├── json_response.py
+│   ├── models.py
+│   ├── page.py
+│   ├── tests.py
+│   ├── view
+│   │   ├── api.py
+│   │   ├── k8s_ssh.py
+│   │   └── login.py
+│   └── views.py
+├── k8s
+│   ├── asgi.py
+│   ├── routing.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── manage.py
+├── requirements.txt
 ```
 
