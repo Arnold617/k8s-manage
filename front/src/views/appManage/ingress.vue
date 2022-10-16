@@ -27,8 +27,14 @@
       <el-table-column prop="namespace" label="命名空间" align="center" min-width="15%" >
 			</el-table-column>
       <el-table-column prop="host" label="域名" align="center" min-width="15%">
+        <template slot-scope="scope">
+					<el-tag type="success" disable-transitions>{{scope.row.host}}</el-tag>
+				</template>
 			</el-table-column>
       <el-table-column prop="path" label="路径" align="center" min-width="15%">
+        <template slot-scope="scope">
+					<el-tag type="success" disable-transitions>{{scope.row.path}}</el-tag>
+				</template>
 			</el-table-column>
       <el-table-column prop="serviceName" label="Service" align="center" min-width="15%">
 			</el-table-column>

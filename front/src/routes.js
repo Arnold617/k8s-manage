@@ -6,6 +6,7 @@ import auth from './views/auth/index.vue'
 import appManage from './views/appManage/index.vue'
 import logs from './views/logs/index.vue'
 import apiManage from './views/apiManage/index.vue'
+import nodeManage from './views/apiManage/node.vue'
 import appDetail from './views/appManage/appdetail.vue'
 import podDetail from './views/appManage/podDetail.vue'
 import cronjob from './views/appManage/cronjob.vue'
@@ -84,11 +85,12 @@ let routes = [
     {
         path: '/',
         component: Home,
-        name: '',
+        name: '集群',
         iconCls: 'fa el-icon-setting',
-		leaf: true,
+		// leaf: true,
         children: [
-            { path: '/apiManage', component: apiManage, name: '接口管理' }
+            { path: '/apiManage', component: apiManage, name: '接口管理' },
+            { path: '/nodeManage', component: nodeManage, name: '节点管理' }
         ]
     },
 	{

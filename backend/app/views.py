@@ -165,7 +165,7 @@ class DeploymentDetail(generics.RetrieveUpdateDestroyAPIView):
 
             # print(response_dep, response_svc)
             if response_dep and response_svc is True:
-                print('ok,logs(success!)')
+                print('ok,logs(delete success!)')
             else:
                 print(response_dep, response_svc)
                 exit(0)

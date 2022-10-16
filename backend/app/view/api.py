@@ -36,7 +36,11 @@ class KubernetesTools(object):
 
     def get_namespace_list(self):
         namespace_list = []
+        reject_list = ['ingress-nginx', 'kube-node-lease', 'kube-public', 'kube-system']
+
         for ns in self.core_api_v1.list_namespace().items:
+            if ns.metadata.name in reject_list:
+                continue
             namespace_list.append(ns.metadata.name)
 
         return namespace_list
