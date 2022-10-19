@@ -15,6 +15,8 @@ export const updateTokenList = params => { return axios.patch(`${base}/tokenDeta
 
 // namespace
 export const getNameSpaces = params => { return axios.get(`${base}/NameSpaces/`) };
+//dashbord
+export const getDashbord = params => { return axios.get(`${base}/DashBord/`) };
 
 // pod list
 export const getPodList = params => { return axios.get(`${base}/PodList/`, { params: params }) };

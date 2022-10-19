@@ -85,11 +85,11 @@ let routes = [
     {
         path: '/',
         component: Home,
-        name: '集群',
+        name: '集群管理',
         iconCls: 'fa el-icon-setting',
 		// leaf: true,
         children: [
-            { path: '/apiManage', component: apiManage, name: '接口管理' },
+            { path: '/apiManage', component: apiManage, name: 'ApiToken' },
             { path: '/nodeManage', component: nodeManage, name: '节点管理' }
         ]
     },
