@@ -392,3 +392,12 @@ class DataList(View):
         result = tools.get_k8s_data()
         data = {"data": result}
         return JsonResponse(data)
+
+
+class NodeList(View):
+
+    def get(self, request):
+        tools = KubernetesTools()
+        result = tools.get_list_node()
+        data = {"data": result}
+        return JsonResponse(data)

@@ -176,16 +176,29 @@ class KubernetesTools(object):
 
     def get_list_node(self):
 
-        api_response = self.core_api_v1.list_node()
-        data = {}
-        for node in api_response.items:
-            data[node.metadata.name] = {"name": node.metadata.name,
-                                    "status": node.status.conditions[-1].type if node.status.conditions[-1].status == "True" else "NotReady",
-                                    "ip": node.status.addresses[0].address,
-                                    "kubelet_version": node.status.node_info.kubelet_version,
-                                    "os_image": node.status.node_info.os_image,
-                                     }
-        return json.dumps(data)
+        list_temp = []
+        try:
+            api_response = self.core_api_v1.list_node()
+
+            for node in api_response.items:
+                limit_memory = node.status.capacity.get('memory').split('K')[0]
+                available_memory = node.status.allocatable.get('memory').split('K')[0]
+                memory_percent = (format(int(available_memory)/int(limit_memory), '.2f'))
+
+                info = {"name": node.metadata.name,
+                        "status": node.status.conditions[-1].type if node.status.conditions[-1].status == "True" else "NotReady",
+                        "ip": node.status.addresses[0].address,
+                        "kubelet_version": node.status.node_info.kubelet_version,
+                        "os_image": node.status.node_info.os_image,
+                        "limit": node.status.capacity,
+                        "available": node.status.allocatable,
+                        "memory_percent": memory_percent,
+                        }
+                list_temp.append(info)
+
+            return list_temp
+        except ApiException as e:
+            return False
 
 
     def create_deployment_object(self, deployment_name, namespace, container_port, container_image, replicas, cpu, memory):
@@ -481,7 +494,7 @@ class KubernetesTools(object):
         data = {}
         try:
             data['clusters'] = 1
-            data['nodes'] = len(eval(self.get_list_node()))
+            data['nodes'] = len(self.get_list_node())
             data['apps'] = len(appList.objects.all())
             data['cronjobs'] = len(self.get_cronjob_list(''))
             data['namespaces'] = len(self.get_namespace_list())
