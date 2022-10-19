@@ -11,14 +11,18 @@
 * 权限根据namespace分配
 * 日志审计
 
+***
 
-### 登陆
+### 功能界面
+#### 登陆
 ![image](https://github.com/Arnold617/k8s-manage/blob/master/images/login.png)
-## 应用
+#### dashbord
+![image](https://github.com/Arnold617/k8s-manage/blob/master/images/dashbord.png)
+#### 应用
 ![image](https://github.com/Arnold617/k8s-manage/blob/master/images/app.png)
-## deployment
+#### deployment
 ![image](https://github.com/Arnold617/k8s-manage/blob/master/images/deployment.png)
-## pod List
+#### pod List
 ![image](https://github.com/Arnold617/k8s-manage/blob/master/images/pod.png)
-## webshell
+#### webshell
 ![image](https://github.com/Arnold617/k8s-manage/blob/master/images/webshell.png)

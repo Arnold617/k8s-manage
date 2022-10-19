@@ -16,6 +16,7 @@ urlpatterns = [
     path('NameSpaces/', NameSpaces.as_view(), name="nameSpaces"),
     path('PodList/', PodList.as_view(), name="pod list"),
     path('ServiceList/', ServiceList.as_view(), name="service list"),
+    path('DashBord/', DataList.as_view(), name="k8s data"),
 
     path('AppList/', AppList.as_view(), name="app list"),
     path('AppDetail/<int:pk>', AppDetail.as_view(), name="app detail"),

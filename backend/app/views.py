@@ -383,3 +383,12 @@ class ServiceList(View):
         result = tools.get_services(namespace)
         data = {"data": result}
         return JsonResponse(data)
+
+
+class DataList(View):
+
+    def get(self, request):
+        tools = KubernetesTools()
+        result = tools.get_k8s_data()
+        data = {"data": result}
+        return JsonResponse(data)

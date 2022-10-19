@@ -8,6 +8,11 @@ django >= 3.0
 ```
 pip install -r requirements.txt
 ```
+### 数据库设置 
+```
+找到文件 backend/k8s/settings
+找到DATABASES段设置正确的即可
+```
 ### 初始化
 ```
 python manage.py makemigrations

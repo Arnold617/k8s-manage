@@ -5,6 +5,7 @@ from kubernetes import client
 from django.http import JsonResponse
 from kubernetes.client.rest import ApiException
 from kubernetes.stream import stream
+from app.models import appList
 
 
 # 解决"verified HTTPS request is being made to host"
@@ -84,36 +85,43 @@ class KubernetesTools(object):
 
     def list_pod(self, namespace, deployment_name):
 
-        if namespace and deployment_name:
-            try:
+        data = []
+        try:
+            if namespace and deployment_name:
                 api_response = self.core_api_v1.list_namespaced_pod(
                     namespace = namespace,
                     label_selector="app=%s" % deployment_name
                 )
-                data = []
-                for pod in api_response.items:
-                    # if pod.metadata.labels['app'] == deployment_name:
-                    # print(pod)
-                    data.append({
-                        "podName": pod.metadata.name,
-                        "ip": pod.status.pod_ip,
-                        "node": pod.status.host_ip,
-                        "status": pod.status.phase,
-                        "startTime": pod.status.start_time,
-                        "namespace": pod.metadata.namespace
-                    })
-                return data
-            except ApiException as e:
-                return False
+            else:
+                api_response = self.core_api_v1.list_pod_for_all_namespaces()
+
+            for pod in api_response.items:
+                data.append({
+                    "podName": pod.metadata.name,
+                    "ip": pod.status.pod_ip,
+                    "node": pod.status.host_ip,
+                    "status": pod.status.phase,
+                    "startTime": pod.status.start_time,
+                    "namespace": pod.metadata.namespace
+                })
+            return data
+        except ApiException as e:
+            return False
 
     def list_deployment(self, namespace):
 
         list_temp = []
-        api_response = self.apps_v1_api.list_namespaced_deployment(namespace)
+        try:
+            if namespace:
+                api_response = self.apps_v1_api.list_namespaced_deployment(namespace)
+            else:
+                api_response = self.apps_v1_api.list_deployment_for_all_namespaces()
+            for info in api_response.items:
+                list_temp.append(info.metadata.name)
+            return list_temp
 
-        for info in api_response.items:
-            list_temp.append(info.metadata.name)
-        return list_temp
+        except ApiException as e:
+            return False
 
 
     def delete_deployment(self, deployment_name, namespace):
@@ -306,9 +314,17 @@ class KubernetesTools(object):
         return False
 
     def get_cronjob_list(self, namespace):
-        response = self.batch_v1_api.list_namespaced_cron_job(namespace)
+
+        try:
+            if namespace:
+                response = self.batch_v1_api.list_namespaced_cron_job(namespace)
+            else:
+                response = self.batch_v1_api.list_cron_job_for_all_namespaces()
         # print(type(response), response.items)
-        return response.items
+            return response.items
+
+        except ApiException as e:
+            return False
 
     def create_cron_job_object(self, name,namespace, image, command, schedule, cpu, memory ):
 
@@ -442,10 +458,38 @@ class KubernetesTools(object):
                 return False
 
     def judge_ingress_exists(self, namespace, name):
+            ingress_list = self.get_ingress_list(namespace)
 
-        ingress_list = self.networking_v1_api.list_namespaced_ingress(namespace)
+            for ing in ingress_list.items:
+                if name == ing.metadata.name:
+                    return True
+            return False
 
-        for ing in ingress_list.items:
-            if name == ing.metadata.name:
-                return True
-        return False
+    def get_ingress_list(self, namespace):
+        try:
+            if namespace:
+                ingress_list = self.networking_v1_api.list_namespaced_ingress(namespace)
+            else:
+                ingress_list = self.networking_v1_api.list_ingress_for_all_namespaces()
+
+            return ingress_list
+
+        except ApiException as e:
+            return False
+
+    def get_k8s_data(self):
+        data = {}
+        try:
+            data['clusters'] = 1
+            data['nodes'] = len(eval(self.get_list_node()))
+            data['apps'] = len(appList.objects.all())
+            data['cronjobs'] = len(self.get_cronjob_list(''))
+            data['namespaces'] = len(self.get_namespace_list())
+            data['deployments'] = len(self.list_deployment(''))
+            data['pods'] = len(self.list_pod("", ""))
+            data['domains'] = len(self.get_ingress_list('').items)
+
+            return data
+
+        except ApiException:
+            return False
