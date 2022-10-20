@@ -6,6 +6,7 @@ django >= 3.0
 ```
 ### 安装依赖
 ```
+cd backend/
 pip install -r requirements.txt
 ```
 ### 数据库设置 
@@ -15,6 +16,7 @@ pip install -r requirements.txt
 ```
 ### 初始化
 ```
+cd backend/
 python manage.py makemigrations
 python manage.py migrate
 ```
@@ -25,7 +27,7 @@ python manage.py migrate
 python manage.py runserver 8000
 ```
 
-### 接口review
+### review
 ```
 # 文件tree
 ├── README.md

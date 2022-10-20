@@ -11,6 +11,16 @@
 * 权限根据namespace分配
 * 日志审计
 
+### 用到的技术
+* Python3.+
+* Django3.+
+* Mysql5.6+
+* Channels4.0+
+* [Kuberneters-client](https://github.com/kubernetes-client/python)
+* [Xterm4.+](https://github.com/xtermjs/xterm.js)
+* [Vue-element](https://github.com/taylorchen709/vue-admin)
+* [Vue-admin](https://element.eleme.cn/)
+
 ***
 
 ### 部署运行
