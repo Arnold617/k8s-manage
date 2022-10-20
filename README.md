@@ -13,10 +13,10 @@
 
 ***
 
-### 部署
+### 部署运行
 
-前端: [front](https://github.com/Arnold617/k8s-manage/tree/master/front)
-后端: [backend](https://github.com/Arnold617/k8s-manage/tree/master/front)
+* 前端 =>  [front](https://github.com/Arnold617/k8s-manage/tree/master/front)
+* 后端 =>  [backend](https://github.com/Arnold617/k8s-manage/tree/master/front)
 
 ***
 
