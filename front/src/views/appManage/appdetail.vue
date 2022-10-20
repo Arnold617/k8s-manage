@@ -7,12 +7,12 @@
 					<el-button type="success" @click="handleAdd">+</el-button>
 				</el-form-item>
 				<el-form-item>
-					<el-input v-model="filters.name" placeholder="查询deployment"></el-input>
+					<el-input v-model="selectVal" icon="search" class="search" placeholder="查询deployment"></el-input>
 				</el-form-item>
 			</el-form>
 		</el-col>
 
-    <el-table :data="appList" highlight-current-row v-loading="listLoading" style="width: 100%;">
+    <el-table :data="tables" highlight-current-row v-loading="listLoading" style="width: 100%;">
 			<el-table-column type="index" label="ID" width="66px"></el-table-column>
 			<el-table-column prop="name" label="名称" min-width="15%">
 			</el-table-column>
@@ -137,6 +137,7 @@
 					name: ''
 				},
         total: 0,
+				selectVal: '',
         queryData: '',
         appList: [],
         listLoading: false,
@@ -189,6 +190,21 @@
     created() {
       this.get_applist()
     },
+
+		computed: {
+    tables() {
+      var selectVal = this.selectVal
+      // console.log(selectVal)
+      if (selectVal) {
+        return this.appList.filter(dataNews => {
+          return Object.keys(dataNews).some(key => {
+            return String(dataNews[key]).indexOf(selectVal) > -1  //区分大小写，严格搜索对应
+          })
+        })
+      }
+      return this.appList
+    }
+  },
 
     methods: {
 

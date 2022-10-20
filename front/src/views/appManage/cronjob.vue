@@ -212,6 +212,7 @@
         this.listLoading = true;
         let params = {
 					namespace: this.select_value,
+					name: this.filters.name
 				}
         getCronJobList(params)
           .then(res => {

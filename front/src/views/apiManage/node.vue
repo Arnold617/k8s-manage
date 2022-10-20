@@ -2,20 +2,14 @@
   <section>
     <!-- 工具条 -->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-			<el-form :inline="true" :model="filters">
-				<!-- <el-form-item>
-					<el-button type="success" @click="handleAdd">+</el-button>
-				</el-form-item> -->
+			<el-form :inline="true">
 				<el-form-item>
-					<el-input v-model="filters.name" placeholder="查询应用名称"></el-input>
+					<el-input v-model="selectVal" icon="search" class="search" placeholder="查询节点名称"></el-input>
 				</el-form-item>
-				<!-- <el-form-item>
-					<el-button type="primary" v-on:click="get_applist">查询</el-button>
-				</el-form-item> -->
 			</el-form>
 		</el-col>
 
-    <el-table :data="nodeList" highlight-current-row v-loading="listLoading" style="width: 100%;">
+    <el-table :data="tables" highlight-current-row v-loading="listLoading" style="width: 100%;">
 			<el-table-column type="index" label="ID" width="66px"></el-table-column>  
       <el-table-column prop="name" label="名称" align="center" min-width="15%" >
 			</el-table-column>
@@ -57,25 +51,17 @@ import { getNodeList } from '../../api/api'
 export default {
   filters: {
     statusFilter(status) {
-        const statusMap = {
-          Ready: 'success',
-          NotReady: 'danger'
-        }
-        return statusMap[status]
-      },
-
-    memoryFiltr(status) {
-      const memoryMap = {
-
+      const statusMap = {
+        Ready: 'success',
+        NotReady: 'danger'
       }
+      return statusMap[status]
     }
-    
   },
+  
   data() {
     return {
-      filters: {
-					name: ''
-				},
+      selectVal: '',
       nodeList: [],
       listLoading: false,
     }
@@ -83,6 +69,21 @@ export default {
 
   created() {
     this.get_nodelist()
+  },
+
+  computed: {
+    tables() {
+      var selectVal = this.selectVal
+      // console.log(selectVal)
+      if (selectVal) {
+        return this.nodeList.filter(dataNews => {
+          return Object.keys(dataNews).some(key => {
+            return String(dataNews[key]).indexOf(selectVal) > -1  //区分大小写，严格搜索对应
+          })
+        })
+      }
+      return this.nodeList
+    }
   },
 
   methods: {
