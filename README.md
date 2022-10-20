@@ -13,6 +13,13 @@
 
 ***
 
+### 部署
+
+前端: [front](https://github.com/Arnold617/k8s-manage/tree/master/front)
+后端: [backend](https://github.com/Arnold617/k8s-manage/tree/master/front)
+
+***
+
 ### 功能界面
 #### 登陆
 ![image](https://github.com/Arnold617/k8s-manage/blob/master/images/login.png)
