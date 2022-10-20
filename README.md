@@ -55,3 +55,11 @@
 
 #### node
 ![image](https://github.com/Arnold617/k8s-manage/blob/master/images/node.png)
+
+
+### 待实现功能：
+* 多集群配置
+* 节点自动部署
+* 监控数据优化展示
+* 环境变量应用
+* 应用支持多集群环境配置
