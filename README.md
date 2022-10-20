@@ -33,6 +33,8 @@
 ***
 
 ### 功能界面
+![image](https://github.com/Arnold617/k8s-manage/blob/master/images/k8s.gif)
+
 #### 登陆
 ![image](https://github.com/Arnold617/k8s-manage/blob/master/images/login.png)
 
