@@ -11,6 +11,8 @@
 * 权限根据namespace分配
 * 日志审计
 
+***
+
 ### 用到的技术
 * Python3.+
 * Django3.+
