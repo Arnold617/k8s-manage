@@ -13,7 +13,7 @@
 
     <el-table :data="podList" highlight-current-row v-loading="listLoading" style="width: 100%;">
 			<el-table-column type="index" label="ID" width="66px"/>
-			<el-table-column prop="podName" label="名称" align="center" min-width="15%"/>
+			<el-table-column prop="podName" label="名称" align="center" min-width="20%"/>
       <el-table-column prop="ip" label="ip" align="center" min-width="15%"/>
       <el-table-column prop="node" label="宿主机" align="center" min-width="15%"/>
       <el-table-column prop="status" label="容器状态" align="center" min-width="15%">

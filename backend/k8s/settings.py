@@ -109,9 +109,9 @@ else:
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'k8s',
             'USER': 'root',
-            'PASSWORD': 'password',
+            'PASSWORD': 'Rigol123',
             'HOST': '10.211.55.14',
-            'PORT': '30164',
+            'PORT': '31763',
             'OPTIONS': {
                 "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
             }
