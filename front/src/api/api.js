@@ -19,12 +19,12 @@ export const getNameSpaces = params => { return axios.get(`${base}/NameSpaces/`)
 export const getDashbord = params => { return axios.get(`${base}/DashBord/`) };
 // node
 export const getNodeList = params => { return axios.get(`${base}/NodeList/`) };
-
 // pod list
 export const getPodList = params => { return axios.get(`${base}/PodList/`, { params: params }) };
-
 // service list
 export const getServiceList = params => { return axios.get(`${base}/ServiceList/`, { params: params }) };
+// cron job status
+export const getCronJobStatus = params => { return axios.get(`${base}/CronJobStatus/`, { params: params }) };
 
 // app 
 export const getAppList = params => { return axios.get(`${base}/AppList/`, {params: params}) };

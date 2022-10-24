@@ -506,3 +506,8 @@ class KubernetesTools(object):
 
         except ApiException:
             return False
+
+    def cron_job_status(self, name, namespace):
+
+        result = self.batch_v1_api.read_namespaced_cron_job_status_with_http_info(name, namespace)
+        return result

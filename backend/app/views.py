@@ -401,3 +401,13 @@ class NodeList(View):
         result = tools.get_list_node()
         data = {"data": result}
         return JsonResponse(data)
+
+
+class CronJobStatus(View):
+
+    def get(self, request):
+        name,namespace = 'test','test'
+        tools = KubernetesTools()
+        result = tools.cron_job_status(name, namespace)
+        data = {"data": result}
+        return JsonResponse(data)

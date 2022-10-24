@@ -34,6 +34,7 @@
         <template slot-scope="scope">
           <el-button type="warning" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+          <el-button type="primary" size="small" @click="handleDetail(scope.$index, scope.row)">详情</el-button>
         </template>
         <template>
           <div id="xterm" class="xterm"></div>

@@ -26,12 +26,13 @@ urlpatterns = [
     path('DeploymentDetail/<int:pk>', DeploymentDetail.as_view(), name="deployment detail"),
 
     # cronjob
-    path('CronJobList/', CronJobList.as_view(), name="deployment list"),
-    path('CronJobDetail/<int:pk>', CronJobDetail.as_view(), name="deployment detail"),
+    path('CronJobList/', CronJobList.as_view(), name="cron job list"),
+    path('CronJobDetail/<int:pk>', CronJobDetail.as_view(), name="cron job detail"),
+    path('CronJobStatus/', CronJobStatus.as_view(), name="cron job status"),
 
     # ingress
-    path('IngressList/', IngressList.as_view(), name="deployment list"),
-    path('IngressDetail/<int:pk>', IngressDetail.as_view(), name="deployment detail"),
+    path('IngressList/', IngressList.as_view(), name="ingress list"),
+    path('IngressDetail/<int:pk>', IngressDetail.as_view(), name="ingress detail"),
 
 ]
 
