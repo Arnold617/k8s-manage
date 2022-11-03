@@ -122,7 +122,7 @@
   </section>
 </template>
 <script>
-  import { getCronJobList, deleteCronJob, addCronJob, updateCronJob, getNameSpaces } from '../../api/api';
+  import { getCronJobList, deleteCronJob, addCronJob, updateCronJob, getNameSpaces, getCronJobStatus } from '../../api/api';
 
   export default {
     filters:{
@@ -144,6 +144,7 @@
         editLoading: false,
         addFormVisible: false,
         editFormVisible: false,
+				detailFormVisible: false,
         NameSpaceList: [],
         page: 1,
         total: 0,
@@ -154,7 +155,8 @@
         editForm: {
           name: '',
         },
-        
+				detailForm: {},
+  
         addFormRules: {
 					name: [{
 						required: true,
@@ -244,6 +246,12 @@
 			handleEdit: function(index, row) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
+			},
+			
+			// 显示cron详情
+			hadnleDetail: function(index, row) {
+				this.detailFormVisible = true;
+				this.detailForm = Object.assign({}, row)
 			},
 
       // 限制只能输入数字，英文
